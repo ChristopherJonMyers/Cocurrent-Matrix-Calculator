@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
   if (SIZE%P!=0) {
     if (myrank==0) printf("Matrix size not divisible by number of processors\n");
     MPI_Finalize();
-    return EXIT_FAILURE;
+    return 1;
   }
 
   from = myrank * SIZE/P;
