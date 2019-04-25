@@ -1,15 +1,14 @@
 /*
  *  mmult.c: matrix multiplication using MPI.
- * There are some simplifications here. The main one is that matrices B and C
- * are fully allocated everywhere, even though only a portion of them is
+ * There are some simplifications here. The main one is that matrices B and C 
+ * are fully allocated everywhere, even though only a portion of them is 
  * used by each processor (except for processor 0)
  */
 
 #include <mpi.h>
 #include <stdio.h>
-#include <stdlib.h>
 
-#define SIZE 8                  /* Size of matrices */
+#define SIZE 8			/* Size of matrices */
 
 int A[SIZE][SIZE], B[SIZE][SIZE], C[SIZE][SIZE];
 
@@ -33,11 +32,15 @@ void print_matrix(int m[SIZE][SIZE])
   }
 }
 
+
 int main(int argc, char *argv[])
 {
   int myrank, P, from, to, i, j, k;
-  MPI_Init(&argc, &argv);
-  MPI_Comm_rank(MPI_COMM_WORLD, &myrank);       /* who am i */
+  int tag = 666;		/* any value will do */
+  MPI_Status status;
+  
+  MPI_Init (&argc, &argv);
+  MPI_Comm_rank(MPI_COMM_WORLD, &myrank);	/* who am i */
   MPI_Comm_size(MPI_COMM_WORLD, &P); /* number of processors */
 
   /* Just to use the simple variants of MPI_Gather and MPI_Scatter we */
@@ -47,7 +50,7 @@ int main(int argc, char *argv[])
   if (SIZE%P!=0) {
     if (myrank==0) printf("Matrix size not divisible by number of processors\n");
     MPI_Finalize();
-   return EXIT_FAILURE;
+    return EXIT_FAILURE;
   }
 
   from = myrank * SIZE/P;
@@ -62,17 +65,17 @@ int main(int argc, char *argv[])
   }
 
   MPI_Bcast (B, SIZE*SIZE, MPI_INT, 0, MPI_COMM_WORLD);
-  MPI_Scatter (A, SIZE*SIZE, MPI_INT, A[from], SIZE*SIZE, MPI_INT, 0, MPI_COMM_WORLD);
+  MPI_Scatter (A, SIZE*SIZE/P, MPI_INT, A[from], SIZE*SIZE/P, MPI_INT, 0, MPI_COMM_WORLD);
 
   printf("computing slice %d (from row %d to %d)\n", myrank, from, to-1);
-  for (i=from; i<to; i++)
+  for (i=from; i<to; i++) 
     for (j=0; j<SIZE; j++) {
       C[i][j]=0;
       for (k=0; k<SIZE; k++)
-        C[i][j] += A[i][k]*B[k][j];
+	C[i][j] += A[i][k]*B[k][j];
     }
 
-     MPI_Gather (C[from], SIZE*SIZE/P, MPI_INT, C, SIZE*SIZE/P, MPI_INT, 0, MPI_COMM_WORLD);
+  MPI_Gather (C[from], SIZE*SIZE/P, MPI_INT, C, SIZE*SIZE/P, MPI_INT, 0, MPI_COMM_WORLD);
 
   if (myrank==0) {
     printf("\n\n");
@@ -87,3 +90,6 @@ int main(int argc, char *argv[])
   MPI_Finalize();
   return 0;
 }
+
+
+
