@@ -1,8 +1,7 @@
 // CPP Program to multiply two matrix using pthreads 
 #include <bits/stdc++.h> 
 #include <chrono> 
-using namespace std;
-using namespace std::chrono; 
+
 
 // maximum size of matrix 
 #define MAX 16
@@ -36,50 +35,50 @@ int main()
 	} 
 /*
 	// Displaying matA 
-	cout << endl 
+	std::cout << endl 
 		<< "Matrix A" << endl; 
 	for (int i = 0; i < MAX; i++) { 
 		for (int j = 0; j < MAX; j++) 
-			cout << matA[i][j] << " "; 
-		cout << endl; 
+			std::cout << matA[i][j] << " "; 
+		std::cout << endl; 
 	} 
 
 	// Displaying matB 
-	cout << endl 
+	std::cout << endl 
 		<< "Matrix B" << endl; 
-	for (int i = 0; i < MAX; i++) { 
+	std::for (int i = 0; i < MAX; i++) { 
 		for (int j = 0; j < MAX; j++) 
 			cout << matB[i][j] << " ";		 
-		cout << endl; 
+		std::cout << endl; 
 	} 
 */
-	auto start = high_resolution_clock::now();
+	std::chrono auto start = high_resolution_clock::now();
 	
 	// declaring four threads 
-	pthread_t threads[MAX_THREAD]; 
+	std::pthread_t threads[MAX_THREAD]; 
 
 	// Creating four threads, each evaluating its own part 
 	for (int i = 0; i < MAX_THREAD; i++) { 
 		int* p; 
-		pthread_create(&threads[i], NULL, multi, (void*)(p)); 
+		std::pthread_create(&threads[i], NULL, multi, (void*)(p)); 
 	} 
 
 	// joining and waiting for all threads to complete 
 	for (int i = 0; i < MAX_THREAD; i++) 
-		pthread_join(threads[i], NULL);	 
+		std::pthread_join(threads[i], NULL);	 
 	
-	auto stop = high_resolution_clock::now();
-	auto duration = duration_cast<microseconds>(stop - start);
-	cout << duration.count() << endl;
+	std::chrono auto stop = high_resolution_clock::now();
+	std::chrono auto duration = duration_cast<microseconds>(stop - start);
+	std::cout << duration.count() << endl;
 
 	/*
 	// Displaying the result matrix 
-	cout << endl 
+	std::cout << endl 
 		<< "Multiplication of A and B" << endl; 
 	for (int i = 0; i < MAX; i++) { 
 		for (int j = 0; j < MAX; j++) 
-			cout << matC[i][j] << " ";		 
-		cout << endl; 
+			std::cout << matC[i][j] << " ";		 
+		std::cout << endl; 
 	} */
 	return 0; 
 } 
