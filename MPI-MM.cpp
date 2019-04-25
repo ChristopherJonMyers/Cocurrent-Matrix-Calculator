@@ -36,7 +36,7 @@ void print_matrix(int m[SIZE][SIZE])
 int main(int argc, char *argv[])
 {
   int myrank, P, from, to, i, j, k;
-  MPI_Init(&argc, %argv);
+  MPI_Init(&argc, &argv);
   MPI_Comm_rank(MPI_COMM_WORLD, &myrank);       /* who am i */
   MPI_Comm_size(MPI_COMM_WORLD, &P); /* number of processors */
 
