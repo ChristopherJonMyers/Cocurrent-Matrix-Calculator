@@ -1,6 +1,8 @@
 // CPP Program to multiply two matrix using pthreads 
 #include <bits/stdc++.h> 
-using namespace std; 
+#include <chrono> 
+using namespace std;
+using namespace std::chrono; 
 
 // maximum size of matrix 
 #define MAX 16
@@ -32,7 +34,7 @@ int main()
 			matB[i][j] = rand() % 10; 
 		} 
 	} 
-
+/*
 	// Displaying matA 
 	cout << endl 
 		<< "Matrix A" << endl; 
@@ -50,7 +52,9 @@ int main()
 			cout << matB[i][j] << " ";		 
 		cout << endl; 
 	} 
-
+*/
+	auto start = high_resolution_clock::now();
+	
 	// declaring four threads 
 	pthread_t threads[MAX_THREAD]; 
 
@@ -63,7 +67,12 @@ int main()
 	// joining and waiting for all threads to complete 
 	for (int i = 0; i < MAX_THREAD; i++) 
 		pthread_join(threads[i], NULL);	 
+	
+	auto stop = high_resolution_clock::now();
+	auto duration = duration_cast<microseconds>(stop - start);
+	cout << duration.count() << endl;
 
+	/*
 	// Displaying the result matrix 
 	cout << endl 
 		<< "Multiplication of A and B" << endl; 
@@ -71,6 +80,6 @@ int main()
 		for (int j = 0; j < MAX; j++) 
 			cout << matC[i][j] << " ";		 
 		cout << endl; 
-	} 
+	} */
 	return 0; 
 } 
