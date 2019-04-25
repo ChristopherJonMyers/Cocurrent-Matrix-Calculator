@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
   }
 
   MPI_Bcast (B, SIZE*SIZE, MPI_INT, 0, MPI_COMM_WORLD);
-  MPI_Scatter (A, SIZE*SIZE/P, MPI_INT, A[from], SIZE*SIZE/P, MPI_INT, 0, MPI_COMM_WORLD);
+  MPI_Scatter (&A, SIZE*SIZE/P, MPI_INT, &A[from], SIZE*SIZE/P, MPI_INT, 0, MPI_COMM_WORLD);
 
   printf("computing slice %d (from row %d to %d)\n", myrank, from, to-1);
   for (i=from; i<to; i++) 
