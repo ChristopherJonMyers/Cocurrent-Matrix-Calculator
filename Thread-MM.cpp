@@ -3,10 +3,10 @@
 using namespace std; 
 
 // maximum size of matrix 
-#define MAX 4 
+#define MAX 16
 
 // maximum number of threads 
-#define MAX_THREAD 4 
+#define MAX_THREAD 1
 
 int matA[MAX][MAX]; 
 int matB[MAX][MAX]; 
@@ -17,17 +17,15 @@ void* multi(void* arg)
 { 
 	int core = step_i++; 
 
-	// Each thread computes 1/4th of matrix multiplication 
-	for (int i = core * MAX / 4; i < (core + 1) * MAX / 4; i++) 
+	for (int i = core * MAX / MAX_THREAD; i < (core + 1) * MAX / MAX_THREAD; i++) 
 		for (int j = 0; j < MAX; j++) 
 			for (int k = 0; k < MAX; k++) 
 				matC[i][j] += matA[i][k] * matB[k][j]; 
 } 
 
-// Driver Code 
+
 int main() 
 { 
-	// Generating random values in matA and matB 
 	for (int i = 0; i < MAX; i++) { 
 		for (int j = 0; j < MAX; j++) { 
 			matA[i][j] = rand() % 10; 
